@@ -1,13 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import configViewEngine from "./config/viewEngine.js";
 import initWebRouter from "./route/web.js";
 import { checkConnection } from "./config/connectDB.js";
 import db from "./models/index.js";
 import cors from "cors";
 import passport from "./config/oAuthFacebook.js";
-import { start } from "./services/dailyService/dailyServices.js";
 import { limiter } from "./config/rateLimit.js";
 
 dotenv.config();
@@ -27,7 +25,6 @@ app.use(
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-configViewEngine(app);
 initWebRouter(app);
 
 checkConnection();

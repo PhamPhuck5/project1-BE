@@ -1,28 +1,28 @@
 import { Model, DataTypes } from "sequelize";
 
 export default (sequelize) => {
-  class Group extends Model {
+  class Category extends Model {
     static associate(models) {
-      this.belongsTo(models.User, {
-        foreignKey: "owner",
-      });
-      this.hasMany(models.UserGroup, {
+      this.belongsTo(models.Group, {
         foreignKey: "groupId",
       });
-      this.hasMany(models.Category, {
-        foreignKey: "groupId",
+      this.hasMany(models.UserCategory, {
+        foreignKey: "categoryId",
+      });
+      this.hasMany(models.Event, {
+        foreignKey: "categoryId",
       });
     }
   }
 
-  Group.init(
+  Category.init(
     {
-      name: {
-        type: DataTypes.STRING,
+      groupId: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
-      owner: {
-        type: DataTypes.INTEGER,
+      name: {
+        type: DataTypes.STRING(32),
         allowNull: false,
       },
       createDate: {
@@ -36,10 +36,10 @@ export default (sequelize) => {
     },
     {
       sequelize,
-      modelName: "Group",
-      tableName: "groups",
+      modelName: "Category",
+      tableName: "categories",
     }
   );
 
-  return Group;
+  return Category;
 };

@@ -1,10 +1,14 @@
-// models/user.js
 import { Model, DataTypes } from "sequelize";
 
 export default (sequelize) => {
   class UserGroup extends Model {
     static associate(models) {
-      // define association here
+      this.belongsTo(models.Group, {
+        foreignKey: "groupId",
+      });
+      this.belongsTo(models.User, {
+        foreignKey: "userId",
+      });
     }
   }
 
@@ -13,10 +17,12 @@ export default (sequelize) => {
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        primaryKey: true,
       },
       groupId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        primaryKey: true,
       },
       date: {
         type: DataTypes.DATEONLY,
@@ -24,6 +30,10 @@ export default (sequelize) => {
       },
       isAdmin: {
         type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+      status: {
+        type: DataTypes.ENUM("REQUESTED", "MEMBER"),
         allowNull: false,
       },
     },

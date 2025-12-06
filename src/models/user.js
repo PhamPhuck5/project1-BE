@@ -1,13 +1,22 @@
-// models/user.js
 import { Model, DataTypes } from "sequelize";
 
 export default (sequelize) => {
   class User extends Model {
     static associate(models) {
-      // define association here
-
-      this.hasMany(models.Order, {
-        foreignKey: "user_id",
+      this.hasMany(models.Group, {
+        foreignKey: "owner",
+      });
+      this.hasMany(models.UserGroup, {
+        foreignKey: "userId",
+      });
+      this.hasMany(models.UserCategory, {
+        foreignKey: "userId",
+      });
+      this.hasMany(models.Event, {
+        foreignKey: "creatorId",
+      });
+      this.hasMany(models.Task, {
+        foreignKey: "userId",
       });
     }
   }

@@ -2,42 +2,47 @@
 import { Model, DataTypes } from "sequelize";
 
 export default (sequelize) => {
-  class Event extends Model {
+  class Task extends Model {
     static associate(models) {
       this.belongsTo(models.User, {
-        foreignKey: "creatorId",
-      });
-      this.belongsTo(models.category, {
-        foreignKey: "categoryId",
+        foreignKey: "userId",
       });
     }
   }
 
-  Event.init(
+  Task.init(
     {
       name: {
         type: DataTypes.STRING(100), // max 100 char
         allowNull: false,
       },
-      creatorId: {
+      userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-      },
+      }, //user_id
       date: {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      categoryId: {
-        type: DataTypes.INTEGER,
+      note: {
+        type: DataTypes.STRING,
         allowNull: false,
+      },
+      week: {
+        type: DataTypes.SMALLINT.UNSIGNED,
+        allowNull: false,
+      }, //for index, don't send to user
+      connect: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
       },
     },
     {
       sequelize,
-      modelName: "Event",
-      tableName: "events",
+      modelName: "Task",
+      tableName: "tasks",
     }
   );
 
-  return Event;
+  return Task;
 };

@@ -1,43 +1,37 @@
-// models/user.js
 import { Model, DataTypes } from "sequelize";
 
 export default (sequelize) => {
-  class Event extends Model {
+  class UserCategory extends Model {
     static associate(models) {
+      // define association here
       this.belongsTo(models.User, {
-        foreignKey: "creatorId",
+        foreignKey: "userId",
       });
-      this.belongsTo(models.category, {
+      this.belongsTo(models.Category, {
         foreignKey: "categoryId",
       });
     }
   }
 
-  Event.init(
+  UserCategory.init(
     {
-      name: {
-        type: DataTypes.STRING(100), // max 100 char
-        allowNull: false,
-      },
-      creatorId: {
+      userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-      },
-      date: {
-        type: DataTypes.DATE,
-        allowNull: false,
+        primaryKey: true,
       },
       categoryId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        primaryKey: true,
       },
     },
     {
       sequelize,
-      modelName: "Event",
-      tableName: "events",
+      modelName: "UserCategory",
+      tableName: "user_categories",
     }
   );
 
-  return Event;
+  return UserCategory;
 };
