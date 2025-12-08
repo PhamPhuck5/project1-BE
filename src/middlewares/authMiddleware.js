@@ -7,7 +7,7 @@ export function authMiddleware(req, res, next) {
   if (!token)
     return res.status(401).json({
       status: 401,
-      message: "missing refresh token",
+      message: "missing access token",
       errCode: "login",
     });
   jwt.verify(token, process.env.ACCESS_KEY, (err, userInfo) => {

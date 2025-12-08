@@ -1,12 +1,9 @@
 import express from "express";
 
-import multer from "../config/configMulter.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
+
 import passport from "../config/oAuthFacebook.js";
-
 import authControler from "../controllers/AuthController.js";
-
-import { adminRightMiddleware } from "../middlewares/adminRightMiddleware.js";
 
 let router = express.Router();
 

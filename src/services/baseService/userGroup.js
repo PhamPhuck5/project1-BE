@@ -22,14 +22,20 @@ export const leaveGroup = async (userId, groupId) => {
     });
 };
 
-export const setAdmin = async (userId, groupId, isAdmin = true) => {
+export const setAdmin = async (
+  userId,
+  groupId,
+  targetUserId,
+  isAdmin = true
+) => {
   if (!(await checkOwner(userId, groupId))) {
     throw new Error("don not have permission");
   }
+
   return await UserGroup.update(
     { isAdmin },
     {
-      where: { userId, groupId },
+      where: { userId: targetUserId, groupId },
     }
   );
 };

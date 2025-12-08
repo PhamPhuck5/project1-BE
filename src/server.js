@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import initWebRouter from "./route/web.js";
+import initRoutes from "./router/index.js";
 import { checkConnection } from "./config/connectDB.js";
 import db from "./models/index.js";
 import cors from "cors";
@@ -25,13 +25,12 @@ app.use(
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-initWebRouter(app);
+initRoutes(app);
 
 checkConnection();
 db.sequelize.authenticate();
-// await db.sequelize.sync({ alter: true });
-await db.sequelize.sync();
-console.log("finish working on connect db");
+await db.sequelize.sync({ alter: true });
+// await db.sequelize.sync();
 
 app.use(limiter);
 app.use(passport.initialize());

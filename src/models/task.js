@@ -24,9 +24,13 @@ export default (sequelize) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
+      length: {
+        type: DataTypes.SMALLINT.UNSIGNED,
+        allowNull: false,
+      },
       note: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       week: {
         type: DataTypes.SMALLINT.UNSIGNED,

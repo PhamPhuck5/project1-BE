@@ -27,6 +27,10 @@ export default (sequelize) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
+      length: {
+        type: DataTypes.SMALLINT.UNSIGNED,
+        allowNull: false,
+      },
       categoryId: {
         type: DataTypes.INTEGER,
         allowNull: false,
