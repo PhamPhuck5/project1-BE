@@ -3,7 +3,7 @@ import crypto from "crypto";
 import passport from "passport";
 import { Strategy as FacebookStrategy } from "passport-facebook";
 import process from "process";
-
+import { config } from "../../config.js";
 function mapFacebookToEmail(id) {
   return `${id}facebook@thisisoauthuser.com`;
 }
@@ -36,7 +36,7 @@ passport.use(
     {
       clientID: process.env.FB_APP_ID,
       clientSecret: process.env.FB_APP_SECRET,
-      callbackURL: `${process.env.URL_BE}/facebook/callback`,
+      callbackURL: `${config.URL_BE}/facebook/callback`,
       profileFields: ["id", "displayName"],
     },
     async (accessToken, refreshToken, profile, done) => {

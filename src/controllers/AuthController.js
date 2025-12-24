@@ -3,8 +3,7 @@ import {
   generateAccessToken,
   // generateRefreshToken,
 } from "../services/authServices/jwtServices.js";
-import process from "process";
-
+import { config } from "../../config.js";
 let requestIsLegit = (email, password) => {
   return email.length >= 8 && email[0] != " " && password.length >= 8;
 };
@@ -46,7 +45,7 @@ let handleFacebookLoggin = async (req, res) => {
     let name = (await authServices.findUserByID(id)).name;
 
     return res.redirect(
-      `${process.env.URL_FE}/oAuthsuccess?token=${accessToken}&name=${name}`
+      `${config.URL_FE}/oAuthsuccess?token=${accessToken}&name=${name}`
     );
   } catch (e) {
     console.error(e);

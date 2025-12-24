@@ -3,6 +3,20 @@ import { checkOwner } from "./roleService.js";
 import { deleteGroup } from "./groupService.js";
 const UserGroup = db.UserGroup;
 
+export const getGroupsByUser = async (userId) => {
+  return await db.Group.findAll({
+    include: [
+      {
+        model: db.UserGroup,
+        where: {
+          userId: userId,
+          status: "MEMBER",
+        },
+      },
+    ],
+  });
+};
+
 export const joinGroup = async (userId, groupId, status = "REQUESTED") => {
   return await UserGroup.create({
     userId,

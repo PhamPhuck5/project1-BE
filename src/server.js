@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import { config } from "../config.js";
 import initRoutes from "./router/index.js";
 import { checkConnection } from "./config/connectDB.js";
 import db from "./models/index.js";
@@ -14,7 +15,7 @@ console.log("start server");
 let app = express();
 app.use(
   cors({
-    origin: process.env.URL_FE,
+    origin: config.URL_FE,
     methods: ["GET", "POST", "OPTIONS", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
     credentials: true,

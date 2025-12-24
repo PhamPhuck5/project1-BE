@@ -3,10 +3,10 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.addIndex("tasks", ["userId", "week"]);
+    await queryInterface.addIndex("tasks", ["userId", "date"]);
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeIndex("tasks", ["userId", "week"]);
+    await queryInterface.removeIndex("tasks", ["userId", "date"]);
   },
 };

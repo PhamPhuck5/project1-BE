@@ -1,4 +1,8 @@
-import { createTask, deleteTask } from "../services/baseService/taskService.js";
+import {
+  createTask,
+  deleteTask,
+  getTaskByUserId,
+} from "../services/baseService/taskService.js";
 
 export const handleCreateTask = async (req, res) => {
   try {
@@ -41,6 +45,28 @@ export const handleDeleteTask = async (req, res) => {
       });
     }
 
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+    });
+  }
+};
+
+export const handleGetTasks = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { startDate, endDate } = req.query;
+
+    const { offset } = req.params;
+
+    const listTasks = await getTaskByUserId(userId, startDate, endDate, offset);
+
+    return res.json({
+      success: true,
+      data: listTasks,
+    });
+  } catch (err) {
+    console.error(err);
     return res.status(500).json({
       status: 500,
       message: "Server error",

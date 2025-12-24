@@ -9,7 +9,29 @@ import {
   setAdmin,
   getAllRequestingUsers,
   acceptJoinRequest,
+  getGroupsByUser,
 } from "../services/baseService/userGroup.js";
+
+let handleGetUserGroups = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const groups = await getGroupsByUser(userId);
+
+    return res.status(200).json({
+      status: 200,
+      message: "Get user groups success",
+      data: groups,
+    });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+    });
+  }
+};
+
 let handleCreateGroup = async (req, res) => {
   try {
     await createNewGroup(
@@ -201,4 +223,5 @@ export {
   handleSetAdmin,
   handleGetAllRequestingUsers,
   handleAcceptJoinRequest,
+  handleGetUserGroups,
 };

@@ -1,4 +1,3 @@
-import movieServices from "./baseService/movieServices.js";
 import path from "path";
 import fs from "fs";
 import sharp from "sharp";
@@ -9,11 +8,11 @@ async function convertToJpg(inputPath, outputPath) {
     .toFile(outputPath);
 }
 
-async function changePosterName(name, destination, originalName, oldPath) {
-  let Movies = await movieServices.findMovieByName(name);
-  const movieID = Movies.id;
+async function normalizationFile(destination, originalName, oldPath) {
   const ext = path.extname(originalName).toLowerCase();
-  const newFileName = `${movieID}.jpg`;
+  const baseName = path.basename(originalName, ext);
+
+  const newFileName = `${baseName}.jpg`;
   const newPath = path.join(destination, newFileName);
 
   if (ext !== ".jpg" && ext !== ".jpeg") {
@@ -22,9 +21,10 @@ async function changePosterName(name, destination, originalName, oldPath) {
   } else {
     await fs.promises.rename(oldPath, newPath); // dùng promises
   }
+  return newPath;
 }
 
 const storageServices = {
-  changePosterName: changePosterName,
+  normalizationFile: normalizationFile,
 };
 export default storageServices;

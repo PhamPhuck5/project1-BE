@@ -32,10 +32,7 @@ export default (sequelize) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      week: {
-        type: DataTypes.SMALLINT.UNSIGNED,
-        allowNull: false,
-      }, //for index, don't send to user
+
       connect: {
         type: DataTypes.INTEGER,
         allowNull: true,

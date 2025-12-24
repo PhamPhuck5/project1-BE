@@ -5,27 +5,36 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 
 const _filename = fileURLToPath(import.meta.url); // Lấy đường dẫn tuyệt đối của file hiện tại
-const storagePath = path.join(dirname(_filename), "..", "public");
-fs.mkdirSync(storagePath, { recursive: true });
-fs.mkdirSync(path.join(storagePath, "/posters"), { recursive: true });
+export const storagePath = path.join(dirname(_filename), "..", "temp");
 
+fs.mkdirSync(storagePath, { recursive: true });
+fs.mkdirSync(path.join(storagePath, "/posts"), { recursive: true });
+
+let i = 0;
+const getIndex = () => {
+  i = i + 1;
+  if (i > 1e8) {
+    i = 0;
+  }
+  return i;
+};
 const storage = multer.diskStorage({
   //==> disk |><| memoryStorage => in main memory
-  destination: (req, file, cb) => cb(null, path.join(storagePath, "/posters")),
+  destination: (req, file, cb) => cb(null, path.join(storagePath, "/posts")),
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase(); // lấy đuôi file gốc (.jpg, .png, ...)
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const uniqueSuffix = Date.now() + "-" + getIndex();
     const fileName = `${uniqueSuffix}${ext}`;
     cb(null, fileName);
   },
 });
 const upload = multer({
   storage,
-  //   limits: { fileSize: 15 * 1024 * 1024 }, // 15MB
-  //   fileFilter: (req, file, cb) => {
-  //     if (/^image\/(jpeg|png|webp)$/.test(file.mimetype)) cb(null, true);
-  //     else cb(new Error("Only jpeg/png/webp allowed"));
-  //   },
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+  fileFilter: (req, file, cb) => {
+    if (/^image\/(jpeg|png|webp)$/.test(file.mimetype)) cb(null, true);
+    else cb(new Error("Only jpeg/png/webp allowed"));
+  },
 });
 
 export default upload;

@@ -2,24 +2,24 @@
 import { Model, DataTypes } from "sequelize";
 
 export default (sequelize) => {
-  class Event extends Model {
+  class Post extends Model {
     static associate(models) {
       this.belongsTo(models.User, {
-        foreignKey: "creatorId",
+        foreignKey: "senderId",
       });
-      this.belongsTo(models.Category, {
-        foreignKey: "categoryId",
+      this.belongsTo(models.Event, {
+        foreignKey: "eventId",
       });
     }
   }
 
-  Event.init(
+  Post.init(
     {
-      name: {
-        type: DataTypes.STRING(100), // max 100 char
+      senderId: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
-      creatorId: {
+      eventId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -27,21 +27,17 @@ export default (sequelize) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      length: {
-        type: DataTypes.SMALLINT.UNSIGNED,
-        allowNull: false,
-      },
-      categoryId: {
-        type: DataTypes.INTEGER,
+      key: {
+        type: DataTypes.STRING(40),
         allowNull: false,
       },
     },
     {
       sequelize,
-      modelName: "Event",
-      tableName: "events",
+      modelName: "Post",
+      tableName: "posts",
     }
   );
 
-  return Event;
+  return Post;
 };
