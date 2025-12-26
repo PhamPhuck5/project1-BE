@@ -18,7 +18,7 @@ export const getGroupsByUser = async (userId) => {
 };
 
 export const joinGroup = async (userId, groupId, status = "REQUESTED") => {
-  return await UserGroup.create({
+  return await db.UserGroup.create({
     userId,
     groupId,
     date: new Date(),

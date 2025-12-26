@@ -2,19 +2,41 @@ import db from "../../models/index.js";
 import { onDeleteGroup } from "./categotyService.js";
 import { checkOwner } from "./roleService.js";
 //todo: add author check
-export const createNewGroup = async ({
-  name,
-  owner,
-  createDate,
-  description,
-}) => {
-  return await db.Group.create({
-    name,
-    owner,
-    createDate,
-    description,
-  });
+export const createNewGroup = async (name, owner, createDate, description) => {
+  const t = await db.sequelize.transaction();
+  try {
+    const group = await db.Group.create(
+      {
+        name,
+        owner,
+        createDate,
+        description,
+      },
+      { transaction: t }
+    );
+
+    await onCreateGroup(owner, group.id, t);
+
+    t.commit();
+  } catch (error) {
+    console.log(error);
+    t.rollback();
+  }
 };
+
+export const onCreateGroup = async (userId, groupId, transaction) => {
+  return await db.UserGroup.create(
+    {
+      userId,
+      groupId,
+      date: new Date(),
+      isAdmin: true,
+      status: "MEMBER",
+    },
+    { transaction: transaction }
+  );
+};
+
 export const deleteGroup = async (userId, groupId) => {
   if (!(await checkOwner(userId, groupId))) {
     throw new Error("don not have permission");

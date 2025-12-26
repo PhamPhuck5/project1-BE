@@ -5,6 +5,7 @@ import {
 } from "@aws-sdk/client-s3";
 import { s3 } from "../config/s3ClientConfig.js";
 import { config } from "../../config.js";
+
 export const putS3Object = async (key, content) => {
   await s3.send(
     new PutObjectCommand({

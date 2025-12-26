@@ -30,7 +30,7 @@ initRoutes(app);
 
 checkConnection();
 db.sequelize.authenticate();
-await db.sequelize.sync({ alter: true });
+// await db.sequelize.sync({ alter: true });
 // await db.sequelize.sync();
 
 app.use(limiter);

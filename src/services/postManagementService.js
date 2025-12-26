@@ -1,5 +1,5 @@
 import * as postService from "./baseService/postService.js";
-import { putS3Object, removeS3Object } from "../utils/S3Util";
+import { putS3Object, removeS3Object } from "../utils/S3Util.js";
 import storageServices from "./storageService.js";
 
 export const postNewImage = async (senderId, eventId, fileInfo) => {

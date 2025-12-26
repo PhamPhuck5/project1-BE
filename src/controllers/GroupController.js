@@ -15,7 +15,7 @@ import {
 let handleGetUserGroups = async (req, res) => {
   try {
     const userId = req.user.id;
-
+    console.log("userId: ", userId);
     const groups = await getGroupsByUser(userId);
 
     return res.status(200).json({
