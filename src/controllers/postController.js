@@ -46,6 +46,7 @@ export const getPostImage = async (req, res) => {
     res.setHeader("Content-Type", s3Data.ContentType || "image/jpeg");
     s3Data.Body.pipe(res);
   } catch (error) {
+    console.log(error);
     res.status(404).json({ message: error.message });
   }
 };

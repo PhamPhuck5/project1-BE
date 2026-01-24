@@ -1,16 +1,17 @@
 import * as postService from "./baseService/postService.js";
-import { putS3Object, removeS3Object } from "../utils/S3Util.js";
+import { putS3Object, removeS3Object, getS3Object } from "../utils/S3Util.js";
 import storageServices from "./storageService.js";
-
+import path from "path";
+import fs from "fs";
 export const postNewImage = async (senderId, eventId, fileInfo) => {
-  const { destination, originalname, path } = fileInfo;
+  const { destination, originalname, path: oldPath } = fileInfo;
   let key, filePath, post;
 
   try {
     filePath = await storageServices.normalizationFile(
       destination,
       originalname,
-      tempPath
+      oldPath
     );
 
     post = await postService.create(senderId, eventId, new Date(), "");
@@ -18,7 +19,7 @@ export const postNewImage = async (senderId, eventId, fileInfo) => {
     const extname = path.extname(filePath).toLowerCase();
     key = `posts/${eventId}/${post.id}${extname}`;
 
-    const fileContent = await fs.readFile(filePath);
+    const fileContent = await fs.promises.readFile(filePath);
     await putS3Object(key, fileContent);
 
     post.key = key;
@@ -26,14 +27,13 @@ export const postNewImage = async (senderId, eventId, fileInfo) => {
 
     return post;
   } catch (e) {
-  } finally {
+    console.log(e);
     try {
-      removeS3Object();
+      removeS3Object(key);
     } catch {}
-    try {
-      filePath ?? (await fs.promises.unlink(filePath));
-    } catch (e) {}
     postService.deleteById(post.id);
+  } finally {
+    filePath ?? (await fs.promises.unlink(filePath));
   }
 };
 

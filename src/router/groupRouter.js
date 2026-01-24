@@ -10,12 +10,14 @@ import {
   handleGetAllRequestingUsers,
   handleAcceptJoinRequest,
   handleGetUserGroups,
+  handlehandleFindGroup,
 } from "../controllers/GroupController.js";
 
 let router = express.Router();
 
 let initGroupRouter = (app) => {
   router.get("/groups", authMiddleware, handleGetUserGroups);
+  router.get("/group/:groupId", handlehandleFindGroup);
   router.post("/create", authMiddleware, handleCreateGroup);
   router.delete("/:id", authMiddleware, handleDeleteGroup);
   router.post("/request-join", authMiddleware, handleRequestJoinGroup);

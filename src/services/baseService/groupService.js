@@ -71,3 +71,7 @@ export const updateGroupDescription = async (groupId, newDescription) => {
     { where: { id: groupId } }
   );
 };
+
+export const findGroupById = async (groupId) => {
+  return await db.Group.findOne({ where: { id: groupId } });
+};

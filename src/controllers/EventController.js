@@ -5,6 +5,7 @@ import {
 
 export const handleCreateEvent = async (req, res) => {
   try {
+    console.log("AAAAAAAAAAAAAAAA");
     const userId = req.user.id;
     const { groupId, name, categoryId, date, length } = req.body;
 

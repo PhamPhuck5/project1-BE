@@ -12,7 +12,6 @@ let handleLoggin = async (req, res) => {
   try {
     let email = req.body.email;
     let password = req.body.password;
-
     if (!requestIsLegit(email, password)) {
       // await noteDangerIP
       return res.status(400).json({

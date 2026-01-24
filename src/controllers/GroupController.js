@@ -1,6 +1,7 @@
 import {
   createNewGroup,
   deleteGroup,
+  findGroupById,
 } from "../services/baseService/groupService.js";
 
 import {
@@ -15,13 +16,29 @@ import {
 let handleGetUserGroups = async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log("userId: ", userId);
     const groups = await getGroupsByUser(userId);
 
     return res.status(200).json({
       status: 200,
       message: "Get user groups success",
       data: groups,
+    });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+    });
+  }
+};
+
+let handlehandleFindGroup = async (req, res) => {
+  try {
+    const group = await findGroupById(req.params.groupId);
+    return res.status(200).json({
+      status: 200,
+      message: "Get group info success",
+      data: group,
     });
   } catch (e) {
     console.error(e);
@@ -224,4 +241,5 @@ export {
   handleGetAllRequestingUsers,
   handleAcceptJoinRequest,
   handleGetUserGroups,
+  handlehandleFindGroup,
 };

@@ -15,10 +15,22 @@ let handleFindCategoryByGroup = async (req, res) => {
     const groupId = req.params.groupId;
 
     const categories = await findCategoryByGroup(groupId);
+    const categoriesWithFollow = await Promise.all(
+      categories.map(async (category) => {
+        const isFollowing = await checkFollowedCategory(
+          req.user.id,
+          category.id
+        );
 
+        return {
+          ...category,
+          isFollowing,
+        };
+      })
+    );
     return res.status(200).json({
       status: 200,
-      data: categories,
+      data: categoriesWithFollow,
     });
   } catch (e) {
     console.error(e);

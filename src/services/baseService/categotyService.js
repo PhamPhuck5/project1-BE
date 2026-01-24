@@ -11,6 +11,7 @@ export const findCategoryByGroupAndName = async (groupId, name) => {
 export const findCategoryByGroup = async (groupId) => {
   return await Category.findAll({
     where: { groupId },
+    raw: true,
   });
 };
 export async function createCategory({ userId, groupId, name, description }) {

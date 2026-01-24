@@ -1,3 +1,5 @@
+import db from "../../models/index.js";
+
 export const checkAdmin = async (userId, groupId) => {
   const record = await db.UserGroup.findOne({
     where: { userId, groupId, isAdmin: true },

@@ -39,7 +39,7 @@ async function createNewUser(newUserData) {
 async function findGeneralInfoByID(id) {
   const movie = await db.User.findOne({
     where: { id: id },
-    attributes: ["name", "gender"],
+    attributes: ["name", "gender", "id"],
     raw: true,
   });
   return movie;

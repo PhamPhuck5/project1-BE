@@ -1,10 +1,11 @@
 import db from "../../models/index.js";
-import { checkOwner } from "./roleService.js";
+import { checkOwner, checkAdmin } from "./roleService.js";
 import { deleteGroup } from "./groupService.js";
+import { checkFollowedCategory } from "./userCategoryService.js";
 const UserGroup = db.UserGroup;
 
 export const getGroupsByUser = async (userId) => {
-  return await db.Group.findAll({
+  const groups = await db.Group.findAll({
     include: [
       {
         model: db.UserGroup,
@@ -15,8 +16,17 @@ export const getGroupsByUser = async (userId) => {
       },
     ],
   });
-};
 
+  const plainGroups = groups.map((group) => group.get({ plain: true }));
+
+  await Promise.all(
+    plainGroups.map(async (group) => {
+      group.isAdmin = await checkAdmin(userId, group.id);
+    })
+  );
+
+  return plainGroups;
+};
 export const joinGroup = async (userId, groupId, status = "REQUESTED") => {
   return await db.UserGroup.create({
     userId,
@@ -26,7 +36,6 @@ export const joinGroup = async (userId, groupId, status = "REQUESTED") => {
     status,
   });
 };
-
 export const leaveGroup = async (userId, groupId) => {
   if (await checkOwner(userId, groupId)) {
     await deleteGroup(groupId);
@@ -35,7 +44,6 @@ export const leaveGroup = async (userId, groupId) => {
       where: { userId, groupId },
     });
 };
-
 export const setAdmin = async (
   userId,
   groupId,
@@ -64,7 +72,6 @@ export const getAllRequestingUsers = async (userId, groupId) => {
     },
   });
 };
-
 export const acceptJoinRequest = async (userId, groupId, memberId) => {
   if (!(await checkAdmin(userId, groupId))) {
     throw new Error("don not have permission");
